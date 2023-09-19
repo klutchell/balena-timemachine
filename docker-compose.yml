@@ -1,0 +1,56 @@
+version: "2"
+
+services:
+  # https://hub.docker.com/r/mbentley/timemachine
+  server:
+    image: mbentley/timemachine:smb-20230919
+    environment:
+      ADVERTISED_HOSTNAME: "timemachine"
+      CUSTOM_SMB_CONF: "false"
+      CUSTOM_USER: "false"
+      DEBUG_LEVEL: "1"
+      MIMIC_MODEL: "TimeCapsule8,119"
+      EXTERNAL_CONF: ""
+      HIDE_SHARES: "no"
+      TM_USERNAME: "timemachine"
+      TM_GROUPNAME: "timemachine"
+      TM_UID: "1000"
+      TM_GID: "1000"
+      PASSWORD: "timemachine"
+      SET_PERMISSIONS: "true"
+      SHARE_NAME: "TimeMachine"
+      SMB_INHERIT_PERMISSIONS: "no"
+      SMB_NFS_ACES: "no"
+      SMB_METADATA: "stream"
+      SMB_PORT: "445"
+      SMB_VFS_OBJECTS: "acl_xattr fruit streams_xattr"
+      VOLUME_SIZE_LIMIT: "0"
+      WORKGROUP: "WORKGROUP"
+    ports:
+      - 137:137/udp
+      - 138:138/udp
+      - 139:139
+      - 445:445
+    tmpfs:
+      - /tmp
+      - /run
+      - /var/run
+    volumes:
+      - timemachine:/opt/timemachine
+      - samba-lib:/var/lib/samba
+      - samba-cache:/var/cache/samba
+
+  # https://github.com/balenablocks/hostname
+  # https://hub.balena.io/blocks/1918776/hostname-rpi
+  hostname:
+    image: bh.cr/g_tomas_migone1/hostname-rpi/0.2.1
+    restart: no
+    labels:
+      io.balena.features.supervisor-api: 1
+    environment:
+      SET_HOSTNAME: timemachine
+
+volumes:
+  timemachine: {}
+  samba-lib: {}
+  samba-cache: {}

@@ -1,0 +1,19 @@
+name: "Time Machine"
+type: "sw.application"
+version: 0.0.0
+description: "Run a Samba server compatible with MacOS Time Machine"
+assets:
+  repository:
+    type: "blob.asset"
+    data:
+      url: "https://github.com/klutchell/balena-timemachine"
+  # logo:
+  #   type: "blob.asset"
+  #   data:
+  #     url: "https://raw.githubusercontent.com/klutchell/balena-timemachine/main/logo.png"
+data:
+  defaultDeviceType: "raspberrypi4-64"
+  supportedDeviceTypes:
+    - "raspberrypi3-64"
+    - "raspberrypi4-64"
+    - "intel-nuc"
